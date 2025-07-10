@@ -1,17 +1,31 @@
-# index.py
-from pyrogram import Client
-import asyncio
-import os
+import telebot
+from flask import Flask
+from threading import Thread
 
-API_ID = 12345678  # Replace with your actual Telegram API ID
-API_HASH = "your_api_hash"
-BOT_TOKEN = "8096816657:AAEIGLl_DoC08As3bW8d8lZjqPDtA-TJXtc"
-CHAT_ID = 1786564127
+# Telegram config
+bot_token = "8096816657:AAEIGLl_DoC08As3bW8d8lZjqPDtA-TJXtc"
+chat_id = "1786564127"
+bot = telebot.TeleBot(bot_token)
 
-app = Client("bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+# Sample reply to test
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.send_message(chat_id, "🤖 Bot is live and working!")
 
-@app.on_message()
-async def handler(client, message):
-    await app.send_message(CHAT_ID, f"📩 New message: {message.text}")
+# Flask app to keep Railway service alive
+app = Flask('')
 
-app.run()
+@app.route('/')
+def home():
+    return "Bot is running"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+# Run Flask + Bot in threads
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
+
+keep_alive()
+bot.polling(non_stop=True)
