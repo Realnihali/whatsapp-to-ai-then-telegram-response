@@ -1,9 +1,4 @@
-#!/bin/bash
-# install playwright chromium for python if needed
-python -m playwright install chromium
-
-# run Python bridge in background
-python whatsapp_bridge.py &
-
-# run Node WhatsApp layer
-cd js_bridge && npm install && npm start
+#!/usr/bin/env bash
+python -m playwright install chromium      # Python deps
+python whatsapp_bridge.py &                # start Python AI layer
+cd js_bridge && node index.js              # start Node WhatsApp layer
