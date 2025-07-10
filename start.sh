@@ -1,3 +1,4 @@
 #!/bin/bash
+pip install --upgrade pip
 pip install -r requirements.txt
-python3 whatsapp_bridge.py
+python3 index.py
